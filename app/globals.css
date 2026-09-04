@@ -1,26 +1,161 @@
-@import "tailwindcss";
+@import 'tailwindcss';
+@import 'tw-animate-css';
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@custom-variant dark (&:is(.dark *));
 
 @theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --font-sans: 'Satoshi', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Satoshi', ui-sans-serif, system-ui, sans-serif;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-graphite: var(--graphite);
+  --color-stone: var(--stone);
+  --color-warm: var(--warm);
+  --color-ember: var(--ember);
+  --color-surface: var(--surface);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+:root {
+  --radius: 0.75rem;
+
+  --graphite: oklch(0.145 0.004 60);
+  --stone: oklch(0.55 0.028 250);
+  --warm: oklch(0.985 0.002 60);
+  --ember: oklch(0.72 0.13 65);
+  --surface: oklch(0.19 0.004 60);
+
+  --background: var(--graphite);
+  --foreground: var(--warm);
+  --card: var(--surface);
+  --card-foreground: var(--warm);
+  --popover: var(--surface);
+  --popover-foreground: var(--warm);
+  --primary: var(--warm);
+  --primary-foreground: var(--graphite);
+  --secondary: oklch(0.24 0.006 60);
+  --secondary-foreground: var(--warm);
+  --muted: oklch(0.24 0.006 60);
+  --muted-foreground: oklch(0.66 0.012 250);
+  --accent: oklch(0.28 0.008 60);
+  --accent-foreground: var(--warm);
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: var(--warm);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 14%);
+  --ring: oklch(1 0 0 / 30%);
+
+  --gradient-veil: linear-gradient(
+    to bottom,
+    color-mix(in oklab, var(--graphite) 10%, transparent) 0%,
+    color-mix(in oklab, var(--graphite) 55%, transparent) 55%,
+    var(--graphite) 100%
+  );
+  --gradient-stone: linear-gradient(135deg, var(--warm), var(--stone));
+  --shadow-lift: 0 40px 80px -40px oklch(0 0 0 / 0.9);
+  --ease-lux: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.dark {
+  color-scheme: dark;
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  button {
+    cursor: pointer;
+  }
+
+  ::selection {
+    background: var(--warm);
+    color: var(--graphite);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@utility display-xl {
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  line-height: 0.82;
+  text-transform: uppercase;
+}
+
+@utility eyebrow {
+  font-size: 0.6875rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+}
+
+@utility rule-grid {
+  position: relative;
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: var(--border);
+  }
+  &::before {
+    left: 0;
+  }
+  &::after {
+    right: 0;
+  }
+}
+
+@utility text-veiled {
+  color: color-mix(in oklab, var(--warm) 42%, transparent);
+}
+
+@utility reveal {
+  animation: reveal-up 1s var(--ease-lux) both;
+}
+
+@keyframes reveal-up {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
