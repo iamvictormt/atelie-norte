@@ -79,24 +79,28 @@ export default function Home() {
     window.scrollTo({ top: target.offsetTop - offset, behavior: 'smooth' });
   };
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const header = document.querySelector('header');
-      const offset = (header?.offsetHeight ?? 72) + 24;
-      const midpoint = window.scrollY + window.innerHeight * 0.45;
-      let active = NAV_ITEMS[0]?.href ?? '#top';
-      for (const item of NAV_ITEMS) {
-        const el = document.querySelector<HTMLElement>(item.href);
-        if (el && el.offsetTop - offset <= midpoint) {
-          active = item.href;
-        }
+useEffect(() => {
+  const handleScroll = () => {
+    const header = document.querySelector('header');
+    const offset = (header?.offsetHeight ?? 72) + 24;
+    const midpoint = window.scrollY + window.innerHeight * 0.45;
+    
+    // Força a tipagem para aceitar qualquer href do NAV_ITEMS ou string
+    let active: string = NAV_ITEMS[0]?.href ?? '#top';
+    
+    for (const item of NAV_ITEMS) {
+      const el = document.querySelector<HTMLElement>(item.href);
+      if (el && el.offsetTop - offset <= midpoint) {
+        active = item.href;
       }
-      setSecaoAtiva(active);
-    };
-    handleScroll();
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+    }
+    setSecaoAtiva(active);
+  };
+  
+  handleScroll();
+  window.addEventListener('scroll', handleScroll, { passive: true });
+  return () => window.removeEventListener('scroll', handleScroll);
+}, []);
 
   useEffect(() => {
     document.body.style.overflow = menuAberto ? 'hidden' : '';
@@ -253,7 +257,7 @@ export default function Home() {
       </section>
 
       {/* SOBRE */}
-      <section id="sobre" className="mx-auto max-w-[1600px] px-5 py-20 sm:px-6 lg:px-12 lg:py-40">
+      <section id="sobre" className="mx-auto max-w-[1600px] px-5 py-20 sm:px-6 lg:px-12 lg:py-20">
         <div className="grid gap-14 lg:grid-cols-2 lg:gap-20">
           <div>
             <Reveal delay={120}>
